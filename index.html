@@ -2,23 +2,36 @@
 <html>
 <head>
     <title>Wi-Fi AutoFill</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
-        // Данные вашей Wi-Fi сети
-        const ssid = "MINING";
-        const password = "12345678";
+        // ⚠️ ЗАМЕНИТЕ ЭТИ ДАННЫЕ ⚠️
+        const ssid = "MINING";      // Ваш SSID
+        const password = "12345678"; // Ваш пароль
         
-        // Копируем пароль в буфер обмена
-        navigator.clipboard.writeText(password)
-            .then(() => {
-                // Открываем настройки Wi-Fi iOS
-                window.location.href = "App-Prefs:root=WIFI";
-                // Альтернатива для новых версий iOS: 
-                // window.location.href = "App-Prefs:root=WIFI&path=Network";
-            });
+        // Основная функция
+        function connect() {
+            // Копируем пароль в буфер
+            navigator.clipboard.writeText(password)
+                .then(() => {
+                    // Открываем настройки Wi-Fi на iPhone
+                    window.location.href = "App-Prefs:root=WIFI"; 
+                })
+                .catch(err => {
+                    // Если не удалось скопировать
+                    alert("Ошибка! Введите пароль вручную: " + password);
+                });
+        }
+        
+        // Запускаем при загрузке страницы
+        window.onload = connect;
     </script>
 </head>
 <body>
     <h1>Подключение к Wi-Fi...</h1>
-    <p>Пароль скопирован! Перейдите в настройки → Wi-Fi → выберите сеть «{{ssid}}» → вставьте пароль.</p>
+    <p>SSID: <strong id="ssid-display"></strong></p>
+    <script>
+        // Показываем SSID пользователю
+        document.getElementById("ssid-display").innerText = ssid;
+    </script>
 </body>
 </html>
