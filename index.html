@@ -141,31 +141,6 @@
             text-decoration: none;
         }
         
-        /* Стили для сообщения о возврате */
-        .return-message {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: #21AE5E;
-            color: white;
-            text-align: center;
-            padding: 15px;
-            font-size: 1.2rem;
-            font-weight: 500;
-            z-index: 1000;
-            animation: slideDown 0.5s, fadeOut 0.5s 2.5s forwards;
-        }
-        
-        @keyframes slideDown {
-            from { transform: translateY(-100%); }
-            to { transform: translateY(0); }
-        }
-        
-        @keyframes fadeOut {
-            to { opacity: 0; }
-        }
-        
         /* Анимация элементов */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -250,7 +225,7 @@
             <a href="https://www.sberbank.com/sms/pbpn?requisiteNumber=79818713326" class="bank-card" id="sber-card">
                 <div class="radio-custom"></div>
                 <div class="bank-logo sber">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Sberbank_Logo_2020.svg/240px-Sberbank_Logo_2020.svg.png" alt="Сбербанк">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Sberbank_Logo_2020.svg/512px-Sberbank_Logo_2020.svg.png" alt="Сбербанк">
                 </div>
                 <div class="bank-info">
                     <h2>Сбербанк</h2>
@@ -264,7 +239,7 @@
             <a href="https://www.tinkoff.ru/rm/r_SAxtQLsfpP.WCGECkDJEM/ttDRN40317" class="bank-card" id="tinkoff-card">
                 <div class="radio-custom"></div>
                 <div class="bank-logo tinkoff">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Tinkoff_Bank_logo.svg/240px-Tinkoff_Bank_logo.svg.png" alt="Тинькофф">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Tinkoff_Bank_logo.svg/512px-Tinkoff_Bank_logo.svg.png" alt="Тинькофф">
                 </div>
                 <div class="bank-info">
                     <h2>Тинькофф</h2>
@@ -283,24 +258,6 @@
     </div>
     
     <script>
-        // Проверяем, вернулся ли пользователь (через localStorage)
-        if (localStorage.getItem('returnedFromApp')) {
-            showReturnMessage();
-            localStorage.removeItem('returnedFromApp');
-        }
-        
-        function showReturnMessage() {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'return-message';
-            messageDiv.textContent = 'Ты уникальный!';
-            document.body.appendChild(messageDiv);
-            
-            // Удаляем сообщение после анимации
-            setTimeout(() => {
-                messageDiv.remove();
-            }, 3000);
-        }
-        
         // Автоматическое определение банка
         const userAgent = navigator.userAgent.toLowerCase();
         
@@ -318,9 +275,6 @@
         // Добавляем эффект выбора радио-кнопки
         document.querySelectorAll('.bank-card').forEach(card => {
             card.addEventListener('click', function(e) {
-                // Отменяем переход по ссылке сразу, чтобы добавить анимацию
-                e.preventDefault();
-                
                 // Удаляем выделение со всех карточек
                 document.querySelectorAll('.bank-card').forEach(c => {
                     c.classList.remove('selected');
@@ -328,9 +282,6 @@
                 
                 // Добавляем выделение текущей
                 this.classList.add('selected');
-                
-                // Сохраняем факт перехода в localStorage
-                localStorage.setItem('returnedFromApp', 'true');
                 
                 // Небольшая задержка для анимации перед переходом
                 setTimeout(() => {
