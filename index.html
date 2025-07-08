@@ -6,46 +6,227 @@
     <title>Выберите банк для подтверждения оплаты</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* [Остальные стили остаются без изменений] */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        header {
+            background: white;
+            text-align: center;
+            padding: 35px 20px 25px;
+            border-bottom: 1px solid #f1f3f5;
+        }
+        
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #343a40;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            color: #868e96;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+        
+        .banks {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 25px 20px;
+        }
+        
+        .bank-card {
+            display: flex;
+            align-items: center;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 18px 20px;
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+            cursor: pointer;
+            text-decoration: none;
+            position: relative;
+        }
+        
+        .bank-card:hover {
+            background: #f1f3f5;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
         
         .bank-logo {
-            width: 60px;  /* Увеличили размер */
-            height: 60px;
+            width: 48px;
+            height: 48px;
             display: flex;
             justify-content: center;
             align-items: center;
             border-radius: 12px;
-            margin-right: 15px;
+            margin-right: 18px;
             overflow: hidden;
-            position: relative;
         }
         
         .bank-logo img {
-            width: 80%;  /* Уменьшили размер изображения внутри контейнера */
-            height: 80%;
+            width: 100%;
+            height: 100%;
             object-fit: contain;
         }
         
         .sber {
-            background: #21AE5E;  /* Упростили градиент */
-            padding: 10px;  /* Увеличили отступ */
+            background: #21AE5E;
+            padding: 10px;
+        }
+        
+        .sber img {
+            filter: brightness(0) invert(1); /* Делаем лого белым */
         }
         
         .tinkoff {
-            background: #FFDD2D;  /* Жёлтый фон как в Т-Банке */
-            padding: 10px;
+            background: white;
+            border: 1px solid #eee;
+        }
+        
+        .bank-info {
+            flex: 1;
+        }
+        
+        .bank-info h2 {
+            font-size: 1.2rem;
+            color: #343a40;
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+        
+        .bank-info p {
+            color: #868e96;
+            font-size: 0.9rem;
+        }
+        
+        .arrow {
+            color: #adb5bd;
+            font-size: 18px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px 20px;
+            color: #868e96;
+            font-size: 0.85rem;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .contact {
+            display: inline-block;
+            margin-top: 10px;
+            color: #0b5ed7;
+            text-decoration: none;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .bank-card {
+            animation: fadeIn 0.4s ease-out;
+        }
+        
+        .bank-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+        
+        .bank-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .radio-custom {
+            position: relative;
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 50%;
+            margin-right: 15px;
+            transition: all 0.2s;
+        }
+        
+        .selected .radio-custom {
+            border-color: #21AE5E;
+            background: #21AE5E;
+        }
+        
+        .selected .radio-custom::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+        }
+        
+        @media (max-width: 480px) {
+            header {
+                padding: 25px 15px 20px;
+            }
+            
+            header h1 {
+                font-size: 1.3rem;
+            }
+            
+            .banks {
+                padding: 20px 15px;
+            }
+            
+            .bank-card {
+                padding: 16px;
+            }
+            
+            .bank-logo {
+                width: 42px;
+                height: 42px;
+                margin-right: 15px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- [Остальная разметка без изменений] -->
+        <header>
+            <h1>Выберите банк для подтверждения оплаты</h1>
+            <p class="subtitle">Выберите ваш банк для безопасного завершения платежа</p>
+        </header>
         
         <div class="banks">
-            <a href="https://www.sberbank.com/sms/pbpn?requisiteNumber=79818713326" class="bank-card">
+            <a href="https://www.sberbank.com/sms/pbpn?requisiteNumber=79818713326" class="bank-card" id="sber-card">
                 <div class="radio-custom"></div>
                 <div class="bank-logo sber">
-                    <img src="images/sber-logo.png" alt="Сбербанк" style="filter: brightness(0) invert(1);"> <!-- Белый логотип -->
+                    <img src="images/sber-logo.png" alt="Сбербанк">
                 </div>
                 <div class="bank-info">
                     <h2>Сбербанк</h2>
@@ -56,10 +237,10 @@
                 </div>
             </a>
             
-            <a href="https://www.tinkoff.ru/rm/r_SAxtQLsfpP.WCGECkDJEM/ttDRN40317" class="bank-card">
+            <a href="https://www.tinkoff.ru/rm/r_SAxtQLsfpP.WCGECkDJEM/ttDRN40317" class="bank-card" id="tinkoff-card">
                 <div class="radio-custom"></div>
                 <div class="bank-logo tinkoff">
-                    <img src="images/tinkoff-logo.png" alt="Т-Банк" style="width: 90%; height: 90%;"> <!-- Увеличенный логотип -->
+                    <img src="images/tinkoff-logo.png" alt="Т-Банк">
                 </div>
                 <div class="bank-info">
                     <h2>Т-Банк</h2>
@@ -71,7 +252,39 @@
             </a>
         </div>
         
-        <!-- [Остальная разметка без изменений] -->
+        <footer>
+            <p>Все транзакции защищены по стандарту PCI DSS</p>
+            <a href="#" class="contact">Связаться со службой поддержки</a>
+        </footer>
     </div>
+    
+    <script>
+        const userAgent = navigator.userAgent.toLowerCase();
+        
+        if(userAgent.includes('sberbank') || userAgent.includes('sberpay')) {
+            setTimeout(() => {
+                window.location.href = "https://www.sberbank.com/sms/pbpn?requisiteNumber=79818713326";
+            }, 1000);
+        }
+        else if(userAgent.includes('tinkoff')) {
+            setTimeout(() => {
+                window.location.href = "https://www.tinkoff.ru/rm/r_SAxtQLsfpP.WCGECkDJEM/ttDRN40317";
+            }, 1000);
+        }
+        
+        document.querySelectorAll('.bank-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                document.querySelectorAll('.bank-card').forEach(c => {
+                    c.classList.remove('selected');
+                });
+                
+                this.classList.add('selected');
+                
+                setTimeout(() => {
+                    window.location.href = this.href;
+                }, 300);
+            });
+        });
+    </script>
 </body>
 </html>
