@@ -1,37 +1,204 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>Wi-Fi AutoFill</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script>
-        // ⚠️ ЗАМЕНИТЕ ЭТИ ДАННЫЕ ⚠️
-        const ssid = "MINING";      // Ваш SSID
-        const password = "12345678"; // Ваш пароль
-        
-        // Основная функция
-        function connect() {
-            // Копируем пароль в буфер
-            navigator.clipboard.writeText(password)
-                .then(() => {
-                    // Открываем настройки Wi-Fi на iPhone
-                    window.location.href = "App-Prefs:root=WIFI"; 
-                })
-                .catch(err => {
-                    // Если не удалось скопировать
-                    alert("Ошибка! Введите пароль вручную: " + password);
-                });
+    <title>Выберите банк для перевода</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
         
-        // Запускаем при загрузке страницы
-        window.onload = connect;
-    </script>
+        body {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e6f0ff 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 139, 0.15);
+        }
+        
+        header {
+            background: linear-gradient(135deg, #0b5ed7 0%, #0b4cad 100%);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .banks {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 30px;
+        }
+        
+        .bank-card {
+            display: flex;
+            align-items: center;
+            background: #f8faff;
+            border-radius: 18px;
+            padding: 22px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .bank-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(11, 94, 215, 0.15);
+            border-color: #0b5ed7;
+        }
+        
+        .bank-logo {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            margin-right: 20px;
+            font-size: 30px;
+        }
+        
+        .sber-logo {
+            background: #0b5ed7;
+            color: white;
+        }
+        
+        .tinkoff-logo {
+            background: #ffdd2d;
+            color: #333;
+        }
+        
+        .bank-info {
+            flex: 1;
+        }
+        
+        .bank-info h2 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .bank-info p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .arrow {
+            font-size: 24px;
+            color: #0b5ed7;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+            background: #f8faff;
+            border-top: 1px solid #e6edff;
+        }
+        
+        @media (max-width: 480px) {
+            header {
+                padding: 25px 15px;
+            }
+            
+            header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .banks {
+                padding: 20px 15px;
+            }
+            
+            .bank-card {
+                padding: 18px;
+            }
+            
+            .bank-logo {
+                width: 60px;
+                height: 60px;
+                font-size: 25px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Подключение к Wi-Fi...</h1>
-    <p>SSID: <strong id="ssid-display"></strong></p>
+    <div class="container">
+        <header>
+            <h1>Выберите банк для перевода</h1>
+            <p>Нажмите на иконку вашего банка</p>
+        </header>
+        
+        <div class="banks">
+            <a href="https://www.sberbank.com/sms/pbpn?requisiteNumber=79818713326" class="bank-card">
+                <div class="bank-logo sber-logo">
+                    <i class="fa-solid fa-ruble-sign"></i>
+                </div>
+                <div class="bank-info">
+                    <h2>Сбербанк</h2>
+                    <p>Перевод по номеру телефона</p>
+                </div>
+                <div class="arrow">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
+            </a>
+            
+            <a href="https://www.tinkoff.ru/rm/r_SAxtQLsfpP.WCGECkDJEM/ttDRN40317" class="bank-card">
+                <div class="bank-logo tinkoff-logo">
+                    <i class="fa-solid fa-t"></i>
+                </div>
+                <div class="bank-info">
+                    <h2>Тинькофф</h2>
+                    <p>Перевод по персональной ссылке</p>
+                </div>
+                <div class="arrow">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
+            </a>
+        </div>
+        
+        <footer>
+            Просто поднесите телефон к NFC-метке для оплаты
+        </footer>
+    </div>
+    
     <script>
-        // Показываем SSID пользователю
-        document.getElementById("ssid-display").innerText = ssid;
+        // Автоматическое определение банка
+        const userAgent = navigator.userAgent.toLowerCase();
+        
+        if(userAgent.includes('sberbank') || userAgent.includes('sberpay')) {
+            window.location.href = "https://www.sberbank.com/sms/pbpn?requisiteNumber=79818713326";
+        }
+        else if(userAgent.includes('tinkoff')) {
+            window.location.href = "https://www.tinkoff.ru/rm/r_SAxtQLsfpP.WCGECkDJEM/ttDRN40317";
+        }
     </script>
 </body>
 </html>
