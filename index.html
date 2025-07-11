@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Выберите банк для подтверждения оплаты</title>
+    <title>AntonPay - Подтверждение платежа</title>
+    <meta name="description" content="Безопасное подтверждение платежа через официальные банковские системы">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -38,18 +39,37 @@
             border-bottom: 1px solid #f1f3f5;
         }
         
+        .service-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            letter-spacing: -0.5px;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
         header h1 {
             font-size: 1.5rem;
-            font-weight: 500;
+            font-weight: 600;
             color: #343a40;
             margin-bottom: 5px;
+        }
+        
+        .transfer-info {
+            text-align: center;
+            padding: 0 20px 15px;
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
         }
         
         .banks {
             display: flex;
             flex-direction: column;
             gap: 8px;
-            padding: 20px;
+            padding: 0 20px 20px;
         }
         
         .bank-card {
@@ -58,7 +78,7 @@
             background: #f8f9fa;
             border-radius: 12px;
             padding: 16px 20px;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             border: 1px solid #e9ecef;
             cursor: pointer;
             text-decoration: none;
@@ -98,7 +118,7 @@
             fill: white;
         }
         
-        .tinkoff-logo {
+        .tbank-logo {
             background: #FFDD2D;
         }
         
@@ -109,7 +129,7 @@
         .bank-info h2 {
             font-size: 1.1rem;
             color: #343a40;
-            font-weight: 500;
+            font-weight: 600;
             margin-bottom: 2px;
         }
         
@@ -126,16 +146,36 @@
             background: #f8f9fa;
             border-top: 1px solid #e9ecef;
         }
+        
+        .security-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            color: #21AE5E;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Выберите банк для подтверждения оплаты</h1>
+            <div class="service-name">AntonPay</div>
+            <h1>Выберите, откуда переводите</h1>
+            <div class="security-badge">
+                <i class="fas fa-shield-alt"></i>
+                <span>Безопасное соединение</span>
+            </div>
         </header>
         
+        <div class="transfer-info">
+            Переводы из Сбера → на любой банк<br>
+            Переводы из Т-Банка → только на Т-Банк
+        </div>
+        
         <div class="banks">
-            <a href="https://www.sberbank.com/sms/pbpn?requisiteNumber=79818713326" class="bank-card">
+            <a href="https://www.sberbank.com/sms/pbpn?requisiteNumber=79818713326" class="bank-card" rel="noopener noreferrer">
                 <div class="bank-logo sber-logo">
                     <svg viewBox="0 0 1545 1544" width="28" height="28">
                         <path fill="white" d="m1383.2 301.5c36.2 47.2 66.6 99 92.4 153.9l-702.2 518-295.6-185.6v-221.8l293.6 184.3z"/>
@@ -149,24 +189,25 @@
                     </svg>
                 </div>
                 <div class="bank-info">
-                    <h2>Сбербанк</h2>
-                    <p>Из Сбера на любой банк</p>
+                    <h2>Сбер</h2>
+                    <p>Перевод из приложения Сбера</p>
                 </div>
             </a>
             
-            <a href="https://www.tinkoff.ru/rm/r_SAxtQLsfpP.WCGECkDJEM/ttDRN40317" class="bank-card">
-                <div class="bank-logo tinkoff-logo">
-                    <img src="images/tinkoff-logo.png" alt="Т-Банк">
+            <a href="https://www.tinkoff.ru/rm/r_SAxtQLsfpP.WCGECkDJEM/ttDRN40317" class="bank-card" rel="noopener noreferrer">
+                <div class="bank-logo tbank-logo">
+                    <img src="tinkoff-logo.png" alt="Т-Банк" width="28" height="28">
                 </div>
                 <div class="bank-info">
                     <h2>Т-Банк</h2>
-                    <p>Из Тинька на Тинек</p>
+                    <p>Перевод из приложения Т-Банка</p>
                 </div>
             </a>
         </div>
         
         <footer>
             <p>Все транзакции защищены по стандарту PCI DSS</p>
+            <p>© 2025 AntonPay. Все права защищены.</p>
         </footer>
     </div>
 </body>
