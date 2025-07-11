@@ -3,159 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AntonPay - Заявка на NFC-метку</title>
-    <meta name="description" content="Оформление заявки на персональную NFC-метку">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
-    <style>
-        /* Все предыдущие стили остаются без изменений */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        /* ... остальные стили ... */
-    </style>
-</head>
-<body>
-    <div class="container">
-        <header>
-            <div class="service-name">AntonPay</div>
-            <h1>Заявка на личную NFC-метку</h1>
-        </header>
-        
-        <div class="form-container">
-            <form id="paymentForm">
-                <div class="form-group">
-                    <label for="name">Ваше имя</label>
-                    <input type="text" id="name" name="name" required placeholder="Иван">
-                </div>
-                
-                <div class="form-group">
-                    <label for="phone">Номер телефона</label>
-                    <input type="tel" id="phone" name="phone" required pattern="^[78]\d{10}$" placeholder="79123456789">
-                </div>
-                
-                <div class="form-group">
-                    <label>QR-код из Т-банка</label>
-                    <div class="file-upload">
-                        <label class="file-upload-label">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <span>Нажмите для загрузки QR-кода</span>
-                            <input type="file" id="qrCode" name="qrCode" accept="image/*" required>
-                        </label>
-                    </div>
-                    <div class="qr-preview" id="qrPreview">
-                        <img id="qrImage" alt="Предпросмотр QR-кода">
-                    </div>
-                    <canvas id="qrCanvas"></canvas>
-                </div>
-                
-                <div class="instruction">
-                    <h3><i class="fas fa-info-circle"></i> Как получить QR-код:</h3>
-                    <ol>
-                        <li>Т-банк → "Счет"</li>
-                        <li>Раздел "Пополнение"</li>
-                        <li>"QR-код для пополнения"</li>
-                        <li>"Отправить QR-код"</li>
-                        <li>Сохраните изображение</li>
-                    </ol>
-                </div>
-                
-                <button type="submit" class="submit-btn">Отправить заявку</button>
-            </form>
-            
-            <div id="statusMessage"></div>
-        </div>
-        
-        <footer>
-            <p>© 2025 AntonPay</p>
-        </footer>
-    </div>
-
-    <script>
-        // Превью QR-кода
-        document.getElementById('qrCode').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            const preview = document.getElementById('qrPreview');
-            const img = document.getElementById('qrImage');
-            
-            if (file) {
-                if (file.size > 2 * 1024 * 1024) {
-                    alert('Размер файла не должен превышать 2MB');
-                    e.target.value = '';
-                    preview.style.display = 'none';
-                    return;
-                }
-                
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    img.src = event.target.result;
-                    preview.style.display = 'block';
-                }
-                reader.readAsDataURL(file);
-            } else {
-                preview.style.display = 'none';
-            }
-        });
-
-        // Функция декодирования QR-кода
-        async function decodeQRCode(file) {
-            return new Promise((resolve, reject) => {
-                const img = new Image();
-                const canvas = document.getElementById('qrCanvas');
-                const ctx = canvas.getContext('2d');
-                
-                img.onload = function() {
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    ctx.drawImage(img, 0, 0, img.width, img.height);
-                    
-                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                    const code = jsQR(imageData.data, imageData.width, imageData.height, {
-                        inversionAttempts: "dontInvert",
-                    });
-                    
-                    if (code) {
-                        resolve(code.data);
-                    } else {
-                        reject(new Error("QR-код не распознан"));
-                    }
-                };
-                
-                img.onerror = function() {
-                    reject(new Error("Ошибка загрузки изображения"));
-                };
-                
-                img.src = URL.createObjectURL(file);
-            });
-        }
-
-        // Функция для склонения имени в дательный падеж (упрощенная версия)
-        function getDativeCase(name) {
-            // Простая реализация - для мужских имен добавляем "у", для женских - "е"
-            return name.endsWith('а') || name.endsWith('я') ? name.slice(0, -1) + 'е' : name + 'у';
-        }
-
-        // Функция генерации HTML файла
-        function generatePaymentPage(name, phone, tinkoffUrl) {
-            const dativeName = getDativeCase(name);
-            const html = `<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AntonPay - Подтверждение платежа</title>
     <meta name="description" content="Безопасное подтверждение платежа через официальные банковские системы">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -315,7 +162,7 @@
     <div class="container">
         <header>
             <div class="service-name">AntonPay</div>
-            <h1>Выберите, откуда переводите деньги ${dativeName}</h1>
+            <h1>Выберите, откуда переводите деньги Антону</h1>
             <div class="security-badge">
                 <i class="fas fa-shield-alt"></i>
                 <span>Безопасное соединение</span>
@@ -328,7 +175,7 @@
         </div>
         
         <div class="banks">
-            <a href="https://www.sberbank.com/sms/pbpn?requisiteNumber=${phone}" class="bank-card" rel="noopener noreferrer">
+            <a href="https://www.sberbank.com/sms/pbpn?requisiteNumber=79818713326" class="bank-card" rel="noopener noreferrer">
                 <div class="bank-logo sber-logo">
                     <svg viewBox="0 0 1545 1544" width="28" height="28">
                         <path fill="white" d="m1383.2 301.5c36.2 47.2 66.6 99 92.4 153.9l-702.2 518-295.6-185.6v-221.8l293.6 184.3z"/>
@@ -347,7 +194,7 @@
                 </div>
             </a>
             
-            <a href="${tinkoffUrl}" class="bank-card" rel="noopener noreferrer">
+            <a href="https://www.tinkoff.ru/rm/r_SAxtQLsfpP.WCGECkDJEM/ttDRN40317" class="bank-card" rel="noopener noreferrer">
                 <div class="bank-logo tbank-logo">
                     <img src="tinkoff-logo.png" alt="Т-Банк" width="28" height="28">
                 </div>
@@ -363,92 +210,5 @@
             <p>© 2025 AntonPay. Все права защищены.</p>
         </footer>
     </div>
-</body>
-</html>`;
-            return html;
-        }
-
-        // Обработка формы
-        document.getElementById('paymentForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('name').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const qrFile = document.getElementById('qrCode').files[0];
-            const statusMessage = document.getElementById('statusMessage');
-            
-            // Показываем статус отправки
-            statusMessage.style.display = 'block';
-            statusMessage.className = 'loading';
-            statusMessage.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Обработка данных...';
-
-            try {
-                // Проверка данных
-                if (!name || !phone || !qrFile) {
-                    throw new Error("Заполните все поля");
-                }
-
-                // Декодируем QR-код
-                statusMessage.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Декодируем QR-код...';
-                const qrData = await decodeQRCode(qrFile);
-                
-                if (!qrData.startsWith('http') && !qrData.startsWith('https')) {
-                    throw new Error("QR-код не содержит ссылку");
-                }
-
-                // Генерируем HTML страницу для оплаты
-                const paymentPageHtml = generatePaymentPage(name, phone, qrData);
-                const htmlBlob = new Blob([paymentPageHtml], { type: 'text/html' });
-                const htmlFile = new File([htmlBlob], 'payment_page.html', { type: 'text/html' });
-
-                // Подготовка данных для отправки
-                const formData = new FormData();
-                formData.append('chat_id', '283280949');
-                formData.append('caption', `Новая заявка на NFC-метку!\nИмя: ${name}\nТелефон: ${phone}`);
-                formData.append('document', htmlFile);
-                formData.append('parse_mode', 'HTML');
-
-                // Отправка в Telegram
-                const response = await fetch(`https://api.telegram.org/bot7871497047:AAE29U0GcJ9ENVAHalMjw6TEoLlXwLTn--g/sendDocument`, {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const result = await response.json();
-
-                if (result.ok) {
-                    statusMessage.className = 'success';
-                    statusMessage.innerHTML = `
-                        <div><i class="fas fa-check-circle"></i> Данные успешно отправлены!</div>
-                        <div>HTML файл с платежной страницей отправлен в Telegram</div>
-                        <button class="close-btn" onclick="this.parentElement.style.display='none'">Закрыть</button>
-                    `;
-                    // Очищаем форму
-                    this.reset();
-                    document.getElementById('qrPreview').style.display = 'none';
-                } else {
-                    throw new Error(result.description || "Ошибка отправки");
-                }
-            } catch (error) {
-                console.error("Ошибка:", error);
-                statusMessage.className = 'error';
-                let errorMessage = String(error.message);
-                
-                // Заменяем технические сообщения на понятные пользователю
-                if (error.message.includes('Failed to fetch')) {
-                    errorMessage = "Проблемы с интернет-соединением";
-                } else if (error.message.includes('QR-код не распознан')) {
-                    errorMessage = "Не удалось распознать QR-код. Убедитесь, что загружено корректное изображение";
-                } else if (error.message.includes('не содержит ссылку')) {
-                    errorMessage = "QR-код не содержит ссылку. Пожалуйста, используйте QR-код из Т-банка";
-                }
-                
-                statusMessage.innerHTML = `
-                    <div><i class="fas fa-exclamation-circle"></i> Ошибка: ${errorMessage.replace(/</g, "&lt;")}</div>
-                    <button class="close-btn" onclick="this.parentElement.style.display='none'">Понятно</button>
-                `;
-            }
-        });
-    </script>
 </body>
 </html>
